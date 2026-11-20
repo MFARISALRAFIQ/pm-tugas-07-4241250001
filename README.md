@@ -21,14 +21,20 @@ Tugas rutin 7 (Pemrograman mobile)
 
 Diagram sederhana:
 
-​```
-ChangeNotifierProvider<TugasModel>        <- state bersama
+Diagram sederhana:
+
+```text
+ChangeNotifierProvider<TugasModel>          <- state bersama
  └─ MaterialApp.router
-     ├─ KerangkaNavigasi  (select: jumlahAktif -> badge)
-     │   ├─ HalamanDaftar   (watch + filter via setState)
-     │   └─ HalamanStatistik (watch)
-     └─ HalamanForm (controller: initState/dispose, read -> tambah)
-​```
+     ├─ KerangkaNavigasi
+     │   │  (select: jumlahAktif -> badge)
+     │   ├─ HalamanDaftar
+     │   │    (watch + filter via setState)
+     │   └─ HalamanStatistik
+     │        (watch)
+     └─ HalamanForm
+          (controller: initState/dispose, read -> tambah)
+```
 
 ## Penjelasan
 Aplikasi ini membagi state menjadi dua bagian. State tugas, seperti menambah, menandai selesai, dan menghapus tugas, termasuk state bersama karena digunakan oleh halaman daftar, statistik, dan badge navigasi. Karena itu, saya menyimpannya dalam `TugasModel` yang menggunakan `ChangeNotifier` dan disediakan melalui Provider di atas `MaterialApp.router`. Saya memilih Provider daripada Cubit karena aplikasi ini masih berskala kecil, sehingga penggunaannya lebih sederhana. Selain itu, modelnya mudah diuji menggunakan unit test tanpa perlu UI. Setiap kali data berubah, `notifyListeners()` dipanggil agar widget yang mendengarkannya ikut diperbarui.
